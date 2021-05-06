@@ -6,7 +6,7 @@
 
 #define max_system 4
 #define max_alarm 1
-#define max_recs 10
+#define max_recs 1942
 
 
 	// Our structure
@@ -51,6 +51,8 @@
            		printf("\nAlarm State: %s", my_record[i].alarm);
                	printf("\n");
     		}
+		
+		
 		
 		fclose(ptr_myfile);
 		return 0;
