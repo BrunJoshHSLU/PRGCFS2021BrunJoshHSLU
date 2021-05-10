@@ -5,16 +5,17 @@
 #include<string.h>
 #include<stdlib.h>
 
-
-#define max_recs 1938
+#define max_system 4
+#define max_alarm 1
+#define max_recs 5
 
 
 	// Our structure
 	struct rec {
 		long long time;
 		int pressure;
-		char system;
-		char alarm;
+		char system[max_system];
+		char alarm[max_alarm];
 	};
 	
 	int main()
@@ -48,8 +49,8 @@
 		for(i = 1; i < max_recs; i++) {
                	printf("Time: %lld\n", my_record[i].time);
                	printf("Pressure: %d\n", my_record[i].pressure);
-               	printf("System State: %d\n",my_record[i].system);
-           		printf("Alarm State: %d\n", my_record[i].alarm);
+               	printf("System State: %s\n",my_record[i].system);
+           		printf("Alarm State: %s\n", my_record[i].alarm);
                	printf("\n");
     		}
 		
@@ -63,7 +64,7 @@
 		//file pointer
     		FILE *fp = NULL;
     		//create and open the text file
-   		 fp = fopen("outputfile.csv", "a");
+   		 fp = fopen("csv.csv", "wb");
    		 if(fp == NULL)
    		 {
        		 printf("Error in creating the file\n");
@@ -71,11 +72,8 @@
     		}
     		//write the structure array in file
     		
+    		fwrite(my_record, sizeof(my_record),1, fp);
     		
-    		
-		for(i = 1; i < max_recs; i++) {
-    		fprintf(fp, "%lld;%d;%d;%d\n",my_record[i].time, my_record[i].pressure, 	my_record[i].system, my_record[i].alarm);
-    		}
     		
     		fclose(fp);
  		
