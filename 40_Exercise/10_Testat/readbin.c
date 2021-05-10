@@ -4,12 +4,10 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#define max_recs 1940
 
 
-#define max_recs 1938
-
-
-	// Our structure
+	// Define struct in the same structure as the records
 	struct rec {
 		long long time;
 		int pressure;
@@ -19,62 +17,60 @@
 	
 	int main()
 	{
-		//Read
-		struct rec my_record[max_recs];
+		//Read the data out of the binfile
+		struct rec reactor_record[max_recs];
 		int i;
-		FILE *ptr_myfile;
-
-		ptr_myfile=fopen("pressureSpike.bin","rb");
 		
-		if (!ptr_myfile)
+		FILE *ptr_binfile;
+		ptr_binfile=fopen("pressureSpike.bin","rb");
+		
+		if (!ptr_binfile)
 		{
 			printf("Unable to open file!");
 			return 1;
 		}
 
-		fseek(ptr_myfile, sizeof(struct rec), SEEK_SET);
-		rewind(ptr_myfile);
+		fseek(ptr_binfile, sizeof(struct rec), SEEK_SET);
+		rewind(ptr_binfile);
 		
 
    		for(i = 1; i < max_recs; i++) {
-   			fread(&my_record[i].time, sizeof(long long), 1, ptr_myfile);
-	   		fread(&my_record[i].pressure, sizeof(int), 1, ptr_myfile);
-	   		fread(&my_record[i].system, sizeof(char), 1, ptr_myfile);
-	    		fread(&my_record[i].alarm, sizeof(char), 1, ptr_myfile);
+   			fread(&reactor_record[i].time, sizeof(long long), 1, ptr_binfile);
+	   		fread(&reactor_record[i].pressure, sizeof(int), 1, ptr_binfile);
+	   		fread(&reactor_record[i].system, sizeof(char), 1, ptr_binfile);
+	    		fread(&reactor_record[i].alarm, sizeof(char), 1, ptr_binfile);
   		}
 
 		
  
 		for(i = 1; i < max_recs; i++) {
-               	printf("Time: %lld\n", my_record[i].time);
-               	printf("Pressure: %d\n", my_record[i].pressure);
-               	printf("System State: %d\n",my_record[i].system);
-           		printf("Alarm State: %d\n", my_record[i].alarm);
+               	printf("Time: %lld\n", reactor_record[i].time);
+               	printf("Pressure: %d\n", reactor_record[i].pressure);
+               	printf("System State: %d\n", reactor_record[i].system);
+           		printf("Alarm State: %d\n", reactor_record[i].alarm);
                	printf("\n");
     		}
 		
-		fclose(ptr_myfile);
+		fclose(ptr_binfile);
 		
 		
 		
 		
-		//Write
+		//Open a csv file and write the data in it
 		
-		//file pointer
-    		FILE *fp = NULL;
-    		//create and open the text file
-   		 fp = fopen("outputfile.csv", "a");
+		FILE *fp = NULL;
+    		fp = fopen("reactorlogs.csv","a");
+    		
    		 if(fp == NULL)
    		 {
        		 printf("Error in creating the file\n");
        		 exit(1);
     		}
-    		//write the structure array in file
-    		
+    		   		
     		
     		
 		for(i = 1; i < max_recs; i++) {
-    		fprintf(fp, "%lld;%d;%d;%d\n",my_record[i].time, my_record[i].pressure, 	my_record[i].system, my_record[i].alarm);
+    		fprintf(fp, "%lld;%d;%d;%d\n",reactor_record[i].time, reactor_record[i].pressure, reactor_record[i].system, reactor_record[i].alarm);
     		}
     		
     		fclose(fp);
