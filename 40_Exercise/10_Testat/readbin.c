@@ -70,7 +70,8 @@
     		
     		
 		for(i = 1; i < max_recs; i++) {
-    		fprintf(fp, "%lld;%d;%d;%d\n",reactor_record[i].time, reactor_record[i].pressure, reactor_record[i].system, reactor_record[i].alarm);
+    		fprintf(fp, "%lld;%d;%d;%d\n",reactor_record[i].time, 
+			reactor_record[i].pressure, reactor_record[i].system, reactor_record[i].alarm);
     		}
     		
     		fclose(fp);
